@@ -22,7 +22,6 @@ public class MenuActivity extends AppCompatActivity {
     public void goToGameActivity(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
-        finish();
     }
 }
 
