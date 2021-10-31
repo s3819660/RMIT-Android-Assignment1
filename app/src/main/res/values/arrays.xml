@@ -1,12 +1,24 @@
 <resources>
     <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+    <string-array name="color_theme_entries">
+        <item>Pink</item>
+        <item>Blue</item>
+        <item>Green</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+    <string-array name="color_theme_values">
+        <item>pink</item>
+        <item>blue</item>
+        <item>green</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>Tiếng Việt</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>vi</item>
     </string-array>
 </resources>

@@ -9,50 +9,15 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/text_view_turn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/board"
-        android:layout_margin="10dp"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:textSize="30sp"
+        android:layout_marginVertical="60dp"/>
 
-        <TextView
-            android:id="@+id/text_view_turn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view_turn"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/score_p1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="60sp"
-                android:text="-"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/score_p2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-    </RelativeLayout>
 
     <com.example.rmit_android_assignment1.Board
         android:id="@+id/board"

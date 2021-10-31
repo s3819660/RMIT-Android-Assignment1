@@ -9,14 +9,18 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    Button button;
+    Button startBtn;
+    Button settingBtn;
+
+    String name1;
+    String name2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        button = (Button) findViewById(R.id.btn_play);
+        startBtn = (Button) findViewById(R.id.btn_play);
     }
 
 //    public void goToGameActivity(View view) {
@@ -28,6 +32,30 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
+
+    public void goToSettingsActivity(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+//    public void goToStart(View view) {
+//        Intent intent = new Intent(this, RegisterActivity.class);
+//        startActivityForResult(intent, 100); // When first started the game
+//
+//        System.out.println("name1=" + name1);
+//        System.out.println("name2=" + name2);
+//
+//
+//    }
+
+//    private void startActivityForResult(int requestCode, int resultCode, Intent intent) {
+//        super(requestCode, resultCode, intent);
+//
+//        // Send back from the first game
+//        if (requestCode == 0) {
+//
+//        }
+//    }
 }
 
     //TODO: ask for player name
