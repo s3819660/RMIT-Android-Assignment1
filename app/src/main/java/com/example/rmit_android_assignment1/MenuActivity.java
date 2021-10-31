@@ -12,8 +12,8 @@ public class MenuActivity extends AppCompatActivity {
     Button startBtn;
     Button settingBtn;
 
-    String name1;
-    String name2;
+    String name1 = "";
+    String name2 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +23,16 @@ public class MenuActivity extends AppCompatActivity {
         startBtn = (Button) findViewById(R.id.btn_play);
     }
 
-//    public void goToGameActivity(View view) {
-//        Intent intent = new Intent(this, GameActivity.class);
-//        startActivity(intent);
-//    }
+    public void goToGameActivity(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("name1", name1);
+        intent.putExtra("name2", name2);
+        startActivityForResult(intent, 200); // Go directly to game
+    }
 
     public void goToRegisterActivity(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 100); // Go to register
     }
 
     public void goToSettingsActivity(View view) {
@@ -38,25 +40,50 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void goToStart(View view) {
-//        Intent intent = new Intent(this, RegisterActivity.class);
-//        startActivityForResult(intent, 100); // When first started the game
-//
+    public void goToStart(View view) {
 //        System.out.println("name1=" + name1);
 //        System.out.println("name2=" + name2);
-//
-//
-//    }
 
-//    private void startActivityForResult(int requestCode, int resultCode, Intent intent) {
-//        super(requestCode, resultCode, intent);
+        if (name1.isEmpty()) {
+            goToRegisterActivity(view);
+        } else {
+            //TODO: send names to game
+//            Intent intent = getIntent();
+//            name1 = intent.getStringExtra("name1");
+//            name2 = intent.getStringExtra("name2");
 //
-//        // Send back from the first game
-//        if (requestCode == 0) {
-//
-//        }
-//    }
+//            System.out.println("name1=" + name1);
+//            System.out.println("name2=" + name2);
+            goToGameActivity(view);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        // If game started by registering name
+        // Menu => Register => Game => Menu
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                name1 = intent.getStringExtra("name1");
+                name2 = intent.getStringExtra("name2");
+
+                System.out.println("result OK name1=" + name1);
+                System.out.println("result OK name2=" + name2);
+
+            } else {
+                System.out.println(resultCode);
+                System.out.println("result not OK");
+            }
+        }
+
+        // If game started directly
+        // Menu => Register => Game => Menu => Game => Menu
+        if (requestCode == 200) {
+
+        }
+    }
+
 }
 
-    //TODO: ask for player name
     //TODO: make menu animation

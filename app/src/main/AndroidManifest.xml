@@ -18,7 +18,8 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".MenuActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

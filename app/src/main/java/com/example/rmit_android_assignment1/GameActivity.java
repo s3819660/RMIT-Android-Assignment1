@@ -2,6 +2,7 @@ package com.example.rmit_android_assignment1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -14,8 +15,8 @@ public class GameActivity extends AppCompatActivity {
 
     private Board board;
     private TextView playerTurnView;
-    String name1;
-    String name2;
+    String name1 = "Player 1";
+    String name2 = "Player 2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,13 @@ public class GameActivity extends AppCompatActivity {
         name1 = intent.getStringExtra("name1");
         name2 = intent.getStringExtra("name2");
 
-        if (name1.isEmpty()) name1 = "Player 1";
-        if (name2.isEmpty()) name2 = "Player 2";
+        // name1 and name2 can be null due to null intent
+        try {
+            if (name1.isEmpty()) name1 = "Player 1";
+            if (name2.isEmpty()) name2 = "Player 2";
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
         // Set up game
         board.setUpBoard(playerTurnView, name1, name2);
@@ -53,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onHomeClick(View view) {
+        // Finish activity and go back to MenuActivity
         finish();
     }
 

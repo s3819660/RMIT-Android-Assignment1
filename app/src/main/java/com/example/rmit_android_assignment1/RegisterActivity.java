@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText playerName1;
-    EditText playerName2;
+    EditText name1EditText;
+    EditText name2EditText;
+    String name1;
+    String name2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +20,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void goToGameActivity(View view) {
-        String name1;
-        String name2;
-
         getViews();
 
-        name1 = playerName1.getText().toString();
-        name2 = playerName2.getText().toString();
+        name1 = name1EditText.getText().toString();
+        name2 = name2EditText.getText().toString();
 
+        // Send result back to menu
+        // Send data to home so that players can start game again with the same names
+        Intent data = new Intent();
+        data.putExtra("name1", name1);
+        data.putExtra("name2", name2);
+        setResult(RESULT_OK, data);
+
+        // Send data forward and start to go to game
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("name1", name1);
         intent.putExtra("name2", name2);
@@ -34,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void getViews() {
-        playerName1 = (EditText) findViewById(R.id.player1_name);
-        playerName2 = (EditText) findViewById(R.id.player2_name);
+        name1EditText = (EditText) findViewById(R.id.player1_name);
+        name2EditText = (EditText) findViewById(R.id.player2_name);
     }
 }
