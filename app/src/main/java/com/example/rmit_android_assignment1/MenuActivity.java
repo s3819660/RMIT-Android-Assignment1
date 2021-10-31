@@ -19,8 +19,13 @@ public class MenuActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.btn_play);
     }
 
-    public void goToGameActivity(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+//    public void goToGameActivity(View view) {
+//        Intent intent = new Intent(this, GameActivity.class);
+//        startActivity(intent);
+//    }
+
+    public void goToRegisterActivity(View view) {
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 }

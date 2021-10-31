@@ -20,7 +20,8 @@ public class Board extends View {
     private boolean winLineExist = false;
 
     private final int boardColor;
-    private final int lineColor;
+
+    private int lineColor;
     private final int colorX;
     private final int colorO;
     private final int colorWinLine;
@@ -273,6 +274,11 @@ public class Board extends View {
         logic.setPlayerTurnView(playerTurnView);
         logic.setPlayerNameO(playerNameO);
         logic.setPlayerNameX(playerNameX);
+    }
+
+
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
     }
 
     public int getNumCellPerRow() {

@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:text="play"
         android:layout_margin="80dp"
-        android:onClick="goToGameActivity"/>
+        android:onClick="goToRegisterActivity"/>
 
 </LinearLayout>
