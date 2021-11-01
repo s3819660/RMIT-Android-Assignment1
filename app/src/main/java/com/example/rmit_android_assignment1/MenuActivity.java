@@ -1,20 +1,15 @@
 package com.example.rmit_android_assignment1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-
-import java.nio.channels.InterruptedByTimeoutException;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -29,41 +24,18 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set theme according to settings
-        Intent intent = getIntent();
-        themeColor = intent.getStringExtra("theme_color");
-        // Try catch in case themeColor is null
-        try {
-            if (!themeColor.isEmpty()) {
-                Window window;
-                switch (themeColor) {
-                    case "blue":
-                        // Set theme from theme.xml
-                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_blue, true);
-                        setTheme(R.style.AppTheme_blue);
-                        // Set status bar color
-                        window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(getResources().getColor(R.color.blue_900));
-                        break;
-                    case "green":
-                        // Set theme from theme.xml
-                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_green, true);
-                        setTheme(R.style.AppTheme_green);
-                        // Set status bar color
-                        window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(getResources().getColor(R.color.green_900));
-                        break;
-                    default:
-                        // Set theme from theme.xml
-                        setTheme(R.style.Theme_RMITAndroidAssignment1);
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+        // Set theme according to settings (Approach 1: using SharedPreferences )
+        // Get SharedPreferences
+        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
+                                        ("UserPreferences", Context.MODE_PRIVATE);
+        // Load saved color theme
+        themeColor = savedDataSP.getString("color_theme", "pink");
+        setThemeColor(themeColor);
+
+        // Set theme according to settings (Approach 2: using result code sent from Settings)
+//        Intent intent = getIntent();
+//        themeColor = intent.getStringExtra("theme_color");
+//        setThemeColor(themeColor);
 
         // Set content view
         setContentView(R.layout.activity_menu);
@@ -120,18 +92,10 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         // Menu => Settings => Menu
+        // No longer need this result code since SharedPreferences already handled this
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
                 themeColor = intent.getStringExtra("theme_color");
-//                System.out.println("Send from settings, themecolor=" + themeColor);
-
-//                setTheme(R.style.AppTheme_blue);
-                // Set status bar color
-//                Window window = getWindow();
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                window.setStatusBarColor(getResources().getColor(R.color.blue_900));
-//                setTheme(R.style.AppTheme_blue);
-//                getTheme().applyStyle(R.style.AppTheme_blue, true);
 
                 // Approach: finish this Menu and create another Menu
                 Intent thisIntent = getIntent();
@@ -147,6 +111,42 @@ public class MenuActivity extends AppCompatActivity {
                 System.out.println(resultCode);
                 System.out.println("Result from settings CANCELLED");
             }
+        }
+    }
+
+    private void setThemeColor(String themeColor) {
+        // Try catch in case themeColor is null
+        try {
+            if (!themeColor.isEmpty()) {
+                Window window;
+                switch (themeColor) {
+                    case "blue":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_blue, true);
+                        setTheme(R.style.AppTheme_blueNoActionBar);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.blue_900));
+                        break;
+                    case "green":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_green, true);
+                        setTheme(R.style.AppTheme_greenNoActionBar);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.green_900));
+                        break;
+                    default:
+                        // Set theme from theme.xml
+                        setTheme(R.style.Theme_RMITAndroidAssignment1NoActionBar);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.print("Intial start of app: ");
+            System.out.println(e.toString());
         }
     }
 }

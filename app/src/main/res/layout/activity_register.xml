@@ -21,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:hint="Enter your name...."/>
+        android:hint="@string/enter_your_name"
+        android:inputType="text"
+        android:autofillHints="username" />
 
     <TextView
         android:layout_width="match_parent"
@@ -35,13 +37,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:hint="Enter your name...."/>
+        android:hint="@string/enter_your_name"
+        android:inputType="text"
+        android:autofillHints="username"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play"
-        android:layout_marginTop="80dp"
-        android:onClick="goToGameActivity"/>
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginTop="80dp"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="#EEEEEE"
+            android:textColor="@color/black"
+            android:onClick="onCancelBtnClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play"
+            android:layout_marginTop="80dp"
+            android:layout_marginHorizontal="20dp"
+            android:onClick="onPlayBtnClick"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

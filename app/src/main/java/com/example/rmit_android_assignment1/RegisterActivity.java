@@ -2,24 +2,40 @@ package com.example.rmit_android_assignment1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText name1EditText;
     EditText name2EditText;
+    Button backBtn;
     String name1;
     String name2;
+    String themeColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set theme using SharedPreferences
+        // Get SharedPreferences
+        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
+                ("UserPreferences", Context.MODE_PRIVATE);
+        // Load saved color theme
+        themeColor = savedDataSP.getString("color_theme", "pink");
+        setThemeColor(themeColor);
+
         setContentView(R.layout.activity_register);
     }
 
-    public void goToGameActivity(View view) {
+    public void onPlayBtnClick(View view) {
         getViews();
 
         name1 = name1EditText.getText().toString();
@@ -40,8 +56,48 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    public void onCancelBtnClick(View view) {
+        finish();
+    }
+
     private void getViews() {
         name1EditText = (EditText) findViewById(R.id.player1_name);
         name2EditText = (EditText) findViewById(R.id.player2_name);
+    }
+
+    private void setThemeColor(String themeColor) {
+        // Try catch in case themeColor is null
+        try {
+            if (!themeColor.isEmpty()) {
+                Window window;
+                switch (themeColor) {
+                    case "blue":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_blue, true);
+                        setTheme(R.style.AppTheme_blueNoActionBar);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.blue_900));
+                        break;
+                    case "green":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_green, true);
+                        setTheme(R.style.AppTheme_greenNoActionBar);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.green_900));
+                        break;
+                    default:
+                        // Set theme from theme.xml
+                        setTheme(R.style.Theme_RMITAndroidAssignment1NoActionBar);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.print("Intial start of app: ");
+            System.out.println(e.toString());
+        }
     }
 }

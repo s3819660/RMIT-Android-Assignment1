@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        custom:boardColor="@color/pink_400"
-        custom:lineColor="#FFFFFF"
-        custom:colorX="#FFFFFF"
+        custom:boardColor="@color/pink_600"
         custom:colorO="#FFFFFF"
-        custom:colorWinLine="@color/black"/>
+        custom:colorWinLine="@color/red_400"
+        custom:colorX="#FFFFFF"
+        custom:lineColor="@color/dark_gray" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onHomeClick"
-            android:text="Home" />
+            android:text="@string/home" />
 
         <Button
             android:id="@+id/btn_home"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:onClick="onResetClick"
-            android:text="Reset" />
+            android:text="@string/reset" />
 
     </RelativeLayout>
 

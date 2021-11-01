@@ -19,8 +19,7 @@ public class Board extends View {
     public static final double CELL_PADDING_PERC = 0.15; // box padding percentage
     private boolean winLineExist = false;
 
-    private final int boardColor;
-
+    private int boardColor;
     private int lineColor;
     private final int colorX;
     private final int colorO;
@@ -42,7 +41,8 @@ public class Board extends View {
         try {
             // Get attributes from styled array, all default values = 0
             boardColor = arr.getInteger(R.styleable.Board_boardColor, 0);
-            lineColor = arr.getInteger(R.styleable.Board_lineColor, 0);
+//            lineColor = arr.getInteger(R.styleable.Board_lineColor, 0);
+            lineColor = arr.getInteger(R.styleable.Board_colorX, 0);
             colorX = arr.getInteger(R.styleable.Board_colorX, 0);
             colorO = arr.getInteger(R.styleable.Board_colorO, 0);
             colorWinLine = arr.getInteger(R.styleable.Board_colorWinLine, 0);
@@ -53,9 +53,7 @@ public class Board extends View {
     }
 
     @Override
-    /**
-     * onMeasure: when measuring current device's screen
-     */
+    // onMeasure: when measuring current device's screen
     protected void onMeasure(int width, int height) {
         super.onMeasure(width, height);
 
@@ -124,9 +122,7 @@ public class Board extends View {
     }
 
     @Override
-    /**
-     * canvas = area of Board view
-     */
+    // canvas = area of Board view
     // On draw: the view draw itself using this method
     // On create: this method is used to create activity
     protected void onDraw(Canvas canvas) {
@@ -191,26 +187,6 @@ public class Board extends View {
         for (int row = 1; row < 3; row++) {
             canvas.drawLine(0, cellSize * row, canvas.getHeight(), cellSize * row, paint);
         }
-
-        // test drawX
-//        drawX(canvas, 0, 0);
-//        drawX(canvas, 0, 1);
-//        drawX(canvas, 0, 2);
-//        drawX(canvas, 1, 0);
-//        drawX(canvas, 1, 1);
-//        drawX(canvas, 1, 2);
-//        drawX(canvas, 2, 0);
-//        drawX(canvas, 2, 1);
-//        drawX(canvas, 2, 2);
-//        drawO(canvas, 0, 0);
-//        drawO(canvas, 0, 1);
-//        drawO(canvas, 0, 2);
-//        drawO(canvas, 1, 0);
-//        drawO(canvas, 1, 1);
-//        drawO(canvas, 1, 2);
-//        drawO(canvas, 2, 0);
-//        drawO(canvas, 2, 1);
-//        drawO(canvas, 2, 2);
     }
 
     private void drawX(Canvas canvas, int row, int col) {
@@ -275,7 +251,6 @@ public class Board extends View {
         logic.setPlayerNameO(playerNameO);
         logic.setPlayerNameX(playerNameX);
     }
-
 
     public void setLineColor(int lineColor) {
         this.lineColor = lineColor;
