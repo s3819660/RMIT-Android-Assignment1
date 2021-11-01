@@ -3,6 +3,7 @@ package com.example.rmit_android_assignment1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -27,24 +28,47 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set theme
-//        Intent intent = getIntent();
-//        themeColor = intent.getStringExtra("theme_color");
-//        try {
-//            if (!themeColor.isEmpty())
-//                setTheme(R.style.AppTheme_blue);
-//        } catch (Exception e) {
-//            System.out.println(e.toString());
-//        }
 
-//        setTheme(R.style.AppTheme_blue);
+        // Set theme according to settings
+        Intent intent = getIntent();
+        themeColor = intent.getStringExtra("theme_color");
+        // Try catch in case themeColor is null
+        try {
+            if (!themeColor.isEmpty()) {
+                Window window;
+                switch (themeColor) {
+                    case "blue":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_blue, true);
+                        setTheme(R.style.AppTheme_blue);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.blue_900));
+                        break;
+                    case "green":
+                        // Set theme from theme.xml
+                        // Equivalent to getTheme().applyStyle(R.style.AppTheme_green, true);
+                        setTheme(R.style.AppTheme_green);
+                        // Set status bar color
+                        window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(getResources().getColor(R.color.green_900));
+                        break;
+                    default:
+                        // Set theme from theme.xml
+                        setTheme(R.style.Theme_RMITAndroidAssignment1);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+        // Set content view
         setContentView(R.layout.activity_menu);
 
-        // Set status bar color
-//        Window window = getWindow();
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//        window.setStatusBarColor(getResources().getColor(R.color.blue_900));
-
+        // Get button view
         startBtn = (Button) findViewById(R.id.btn_play);
     }
 
@@ -83,10 +107,6 @@ public class MenuActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 name1 = intent.getStringExtra("name1");
                 name2 = intent.getStringExtra("name2");
-
-//                System.out.println("result OK name1=" + name1);
-//                System.out.println("result OK name2=" + name2);
-
             } else {
                 System.out.println(resultCode);
                 System.out.println("Result from Game CANCELLED");
@@ -103,19 +123,26 @@ public class MenuActivity extends AppCompatActivity {
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
                 themeColor = intent.getStringExtra("theme_color");
-                System.out.println("Send from settings, themecolor=" + themeColor);
+//                System.out.println("Send from settings, themecolor=" + themeColor);
 
 //                setTheme(R.style.AppTheme_blue);
                 // Set status bar color
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getResources().getColor(R.color.blue_900));
-                setTheme(R.style.AppTheme_blue);
-                Intent recreateIntent = new Intent(this, MenuActivity.class);
-                intent.putExtra("theme_color", themeColor);
+//                Window window = getWindow();
+//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                window.setStatusBarColor(getResources().getColor(R.color.blue_900));
+//                setTheme(R.style.AppTheme_blue);
+//                getTheme().applyStyle(R.style.AppTheme_blue, true);
+
+                // Approach: finish this Menu and create another Menu
+                Intent thisIntent = getIntent();
+                thisIntent.putExtra("theme_color", themeColor);
                 finish();
-//                startActivity(recreateIntent);
                 startActivity(getIntent());
+
+                // Approach: recreate() => try this already and it didn't work
+                // It was supposed to work????
+//                this.recreate();
+
             } else {
                 System.out.println(resultCode);
                 System.out.println("Result from settings CANCELLED");
