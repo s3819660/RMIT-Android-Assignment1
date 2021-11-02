@@ -20,12 +20,12 @@
     <PreferenceCategory app:title="Preferences">
 
         <EditTextPreference
-            app:key="edit_player1_name
-"           app:title="Edit player 1's name"/>
+            app:key="edit_player1_name"
+            app:title="Edit player 1's name"/>
 
         <EditTextPreference
-            app:key="edit_player2_name
-"           app:title="Edit player 2's name"/>
+            app:key="edit_player2_name"
+            app:title="Edit player 2's name"/>
 
         <ListPreference
             app:defaultValue="en"

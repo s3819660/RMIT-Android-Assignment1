@@ -12,10 +12,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
-
-    Button startBtn;
-    Button settingBtn;
-
     String name1 = "";
     String name2 = "";
     String themeColor = "";
@@ -39,9 +35,6 @@ public class MenuActivity extends AppCompatActivity {
 
         // Set content view
         setContentView(R.layout.activity_menu);
-
-        // Get button view
-        startBtn = (Button) findViewById(R.id.btn_play);
     }
 
     public void goToGameActivity(View view) {
@@ -58,14 +51,35 @@ public class MenuActivity extends AppCompatActivity {
 
     public void goToSettingsActivity(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
+        intent.putExtra("name1", name1);
+        intent.putExtra("name2", name2);
         startActivityForResult(intent, 300); // From menu to settings
     }
 
+    //TODO: rename all goto methods to onBtnClick
     public void goToStart(View view) {
+        // Get new names if changes were made in settings
+        try {
+            // Set name changes from SharedPreferences
+            // Get SharedPreferences
+            SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
+                    ("UserPreferences", Context.MODE_PRIVATE);
+            // Load saved name changes
+            if (!savedDataSP.getString("settings_name1", "").isEmpty()) {
+                name1 = savedDataSP.getString("settings_name1", "");
+                savedDataSP.edit().putString("settings_name1", "").apply();
+            }
+            if (!savedDataSP.getString("settings_name2", "").isEmpty()) {
+                name2 = savedDataSP.getString("settings_name2", "");
+                savedDataSP.edit().putString("settings_name2", "").apply();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (name1.isEmpty()) {
             goToRegisterActivity(view);
         } else {
-            //TODO: send names to game
             goToGameActivity(view);
         }
     }
@@ -95,18 +109,16 @@ public class MenuActivity extends AppCompatActivity {
         // No longer need this result code since SharedPreferences already handled this
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
+                // Get theme color data sent from Settings
                 themeColor = intent.getStringExtra("theme_color");
-
-                // Approach: finish this Menu and create another Menu
+                // Approach: finish this Menu and create another Menu to refresh changes
                 Intent thisIntent = getIntent();
                 thisIntent.putExtra("theme_color", themeColor);
                 finish();
                 startActivity(getIntent());
-
                 // Approach: recreate() => try this already and it didn't work
                 // It was supposed to work????
 //                this.recreate();
-
             } else {
                 System.out.println(resultCode);
                 System.out.println("Result from settings CANCELLED");

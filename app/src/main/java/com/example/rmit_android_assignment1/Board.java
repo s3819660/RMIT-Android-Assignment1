@@ -96,7 +96,6 @@ public class Board extends View {
 
                     // Check if anyone has won
                     if (logic.checkWinner()) {
-                        System.out.println("line 100 Board");
                         winLineExist = true;
 
                         // Redraw board
@@ -109,8 +108,6 @@ public class Board extends View {
                         logic.setCurrentPlayer(1);
                     else if (logic.getCurrentPlayer() == 1)
                         logic.setCurrentPlayer(0);
-
-                    System.out.println("line 101 " + logic.getCurrentPlayer());
                 }
             }
 
@@ -165,7 +162,6 @@ public class Board extends View {
                         drawO(canvas, row, col);
                     else
                         drawX(canvas, row, col);
-                    System.out.println("line 140 " + board[row][col]);
                 }
             }
         }

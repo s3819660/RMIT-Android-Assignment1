@@ -16,19 +16,22 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import java.io.FileWriter;
-
 public class SettingsActivity extends AppCompatActivity {
     private String themeColor = "";
+    private String prevName1 = "";
+    private String prevName2 = "";
+    private String changeName1 = "";
+    private String changeName2 = "";
     private boolean isNightModeLocal = true;
-    private static FileWriter fileWriter;
     private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadSavePreferences();
+        // Load changes made last time
+        loadSavedPreferences();
+        // Set theme color as changed last time
         setThemeColor(themeColor); // case already changed in settings then exit and start app again
 
         setContentView(R.layout.settings_activity);
@@ -48,8 +51,16 @@ public class SettingsActivity extends AppCompatActivity {
         // Load default dark mode of local to app
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putBoolean("dark_mode", isNightModeLocal).apply();
+        // Empty Edit names
+        sharedPreferences.edit().putString("edit_player1_name", "").apply();
+        sharedPreferences.edit().putString("edit_player2_name", "").apply();
         // Redraw/Update View
         invalidateOptionsMenu();
+
+        // Get saved names from Menu if available
+        Intent intent = getIntent();
+        prevName1 = intent.getStringExtra("name1");
+        prevName2 = intent.getStringExtra("name2");
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -77,7 +88,20 @@ public class SettingsActivity extends AppCompatActivity {
         // Set result and finish to go back to Menu
         // Also send theme_color to set theme in Menu
         Intent data = new Intent();
+
+        // Put extras to send back to menu
+        // Theme color
         data.putExtra("theme_color", themeColor);
+//        // Names if changes were made
+//        if (!changeName1.isEmpty()) {
+//            changeName2 = prevName2;
+//        } else if (!changeName2.isEmpty()) {
+//            changeName1 = prevName1;
+//        }
+//        data.putExtra("settings_name1", changeName1);
+//        data.putExtra("settings_name2", changeName2);
+
+        // Set result and finish activity
         setResult(RESULT_OK, data);
         finish();
     }
@@ -86,8 +110,9 @@ public class SettingsActivity extends AppCompatActivity {
     // And save the settings by using SharedPreferences
     private void loadSettings() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get theme color change in Settings
         themeColor = sharedPreferences.getString("color_theme", "pink");
-//        System.out.println("colortheme=" + themeColor);
 
         // Check the dark mode enable switch
         boolean checkNightModeToggle = sharedPreferences.getBoolean("dark_mode", false);
@@ -98,11 +123,25 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
+        // Get players' names change in settings
+        changeName1 = sharedPreferences.getString("edit_player1_name", "");
+        changeName2 = sharedPreferences.getString("edit_player2_name", "");
+        if (changeName1.isEmpty())
+            changeName1 = prevName1;
+        if (changeName2.isEmpty())
+            changeName2 = prevName2;
+
         // Save to SharedPreferences
+        // Create "UserPreferences" SharedPreferences to store settings data
         SharedPreferences dataSP = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        // Create editor
         SharedPreferences.Editor editor = dataSP.edit();
+        // Put data in editor
         editor.putString("color_theme", themeColor);
         editor.putBoolean("dark_mode", checkNightModeToggle);
+        editor.putString("settings_name1", changeName1);
+        editor.putString("settings_name2", changeName2);
+        // Apply changes made to preferences from this editor
         editor.apply();
     }
 
@@ -111,11 +150,9 @@ public class SettingsActivity extends AppCompatActivity {
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
                 isNightModeLocal = true;
-//                System.out.println("night mode");
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
                 isNightModeLocal = false;
-//                System.out.println("day mode");
                 break;
         }
 
@@ -124,8 +161,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     // Set theme color
     private void setThemeColor(String themeColor) {
-//        System.out.println("SettingsActivity: themecolor=" + themeColor);
-
         // Try catch in case themeColor is null
         try {
             if (!themeColor.isEmpty()) {
@@ -160,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void loadSavePreferences() {
+    private void loadSavedPreferences() {
         // Get saved SharedPreferences from last changes
         SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 

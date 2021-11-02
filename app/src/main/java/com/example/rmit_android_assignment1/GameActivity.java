@@ -36,11 +36,10 @@ public class GameActivity extends AppCompatActivity {
         setThemeColor(themeColor);
 
         setContentView(R.layout.activity_main); // R.layout.activity_main refers to the activity_main.xml file
-
         // Get the views
         getViews();
 
-        // Get intent
+        // Get intent and name extras
         Intent intent = getIntent();
         name1 = intent.getStringExtra("name1");
         name2 = intent.getStringExtra("name2");
