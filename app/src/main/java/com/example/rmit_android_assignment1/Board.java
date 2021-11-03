@@ -268,10 +268,11 @@ public class Board extends View {
         drawLine(canvas, row, col, winLineType);
     }
     
-    public void setUpBoard(TextView playerTurnView, String playerNameX, String playerNameO) {
+    public void setUpBoard(TextView playerTurnView, String playerNameX, String playerNameO, String language) {
         logic.setPlayerTurnView(playerTurnView);
         logic.setPlayerNameO(playerNameO);
         logic.setPlayerNameX(playerNameX);
+        logic.setLanguage(language);
     }
 
     public void setLineColor(int lineColor) {

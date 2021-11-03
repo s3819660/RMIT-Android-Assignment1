@@ -1,50 +1,50 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="Appearance">
+    <PreferenceCategory app:title="@string/appearance">
 
         <SwitchPreferenceCompat
             app:key="dark_mode"
-            app:title="Enable dark mode" />
+            app:title="@string/enable_dark_mode" />
 
         <ListPreference
             app:defaultValue="pink"
             app:entries="@array/color_theme_entries"
             app:entryValues="@array/color_theme_values"
             app:key="color_theme"
-            app:title="Color theme"
+            app:title="@string/color_theme"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Preferences">
+    <PreferenceCategory app:title="@string/preferences">
 
         <EditTextPreference
             app:key="edit_player1_name"
-            app:title="Edit player 1's name"/>
+            app:title="@string/edit_player_1_name"/>
 
         <EditTextPreference
             app:key="edit_player2_name"
-            app:title="Edit player 2's name"/>
+            app:title="@string/edit_player_2_name"/>
 
         <ListPreference
             app:defaultValue="en"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:key="language"
-            app:title="Language"
+            app:title="@string/language"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Game Mode">
+    <PreferenceCategory app:title="@string/game_mode">
 
         <ListPreference
             app:defaultValue="3"
             app:entries="@array/board_grid_entries"
             app:entryValues="@array/board_grid_values"
             app:key="board_grid"
-            app:title="Board grid"
+            app:title="@string/board_grid"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>

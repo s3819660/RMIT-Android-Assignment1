@@ -10,6 +10,8 @@ public class Logic {
     private int numCellPerRow = 3;
     private int currentPlayer = 1;
 
+    private String language = "en_US";
+
     private TextView playerTurnView;
     private String playerNameX = "Player X";
     private String playerNameO = "Player O";
@@ -46,12 +48,17 @@ public class Logic {
         if (board[row - 1][col - 1] < 0) {
             board[row - 1][col - 1] = currentPlayer;
 
-//            System.out.println("currentPlayer=" + currentPlayer);
-            if (currentPlayer == 1)
-                playerTurnView.setText((playerNameO + "'s Turn"));
-            else
-                playerTurnView.setText((playerNameX + "'s Turn"));
-
+            if (language.equals("vi")) {
+                if (currentPlayer == 1)
+                    playerTurnView.setText(("Lượt của " + playerNameO));
+                else
+                    playerTurnView.setText(("Lượt của " + playerNameX));
+            } else {
+                if (currentPlayer == 1)
+                    playerTurnView.setText((playerNameO + "'s Turn"));
+                else
+                    playerTurnView.setText((playerNameX + "'s Turn"));
+            }
             return true;
         } else
             return false;
@@ -87,7 +94,6 @@ public class Logic {
                     break;
                 }
             }
-//            System.out.println("horizonal win");
         }
 
         // Check vertical win
@@ -104,7 +110,6 @@ public class Logic {
                     }
                 }
             }
-//            System.out.println("vertical win");
         }
 
         // Check diagonal win
@@ -121,15 +126,19 @@ public class Logic {
                 winData[2] = LineType.POSITIVE_DIAGONAL;
                 isWinnerFound = true;
             }
-//            System.out.println("diagonal win" + winData[2]);
-
         }
 
+        String wonMsg = " won!!!!!!";
+        String tieMsg = "Tie!";
+        if (language.equals("vi")) {
+            tieMsg = "Hòa!";
+            wonMsg = " thắng!!!!!!";
+        }
         if (isWinnerFound) {
             if (winner == 0)
-                playerTurnView.setText((playerNameO + " won!!!!!!"));
+                playerTurnView.setText((playerNameO + wonMsg));
             else
-                playerTurnView.setText((playerNameX + " won!!!!!!"));
+                playerTurnView.setText((playerNameX + wonMsg));
         } else {
             for (int row = 0; row < numCellPerRow; row++) {
                 for (int col = 0; col < numCellPerRow; col++) {
@@ -139,7 +148,7 @@ public class Logic {
             }
 
             if (count == 9)
-                playerTurnView.setText("Tie!");
+                playerTurnView.setText(tieMsg);
         }
 
         return isWinnerFound;
@@ -214,11 +223,17 @@ public class Logic {
             }
         }
 
+        String wonMsg = " won!!!!!!";
+        String tieMsg = "Tie!";
+        if (language.equals("vi")) {
+            tieMsg = "Hòa!";
+            wonMsg = " thắng!!!!!!";
+        }
         if (isWinnerFound) {
             if (winner == 0)
-                playerTurnView.setText((playerNameO + " won!!!!!!"));
+                playerTurnView.setText((playerNameO + wonMsg));
             else
-                playerTurnView.setText((playerNameX + " won!!!!!!"));
+                playerTurnView.setText((playerNameX + wonMsg));
         } else {
             for (int row = 0; row < numCellPerRow; row++) {
                 for (int col = 0; col < numCellPerRow; col++) {
@@ -228,7 +243,7 @@ public class Logic {
             }
 
             if (count == (numCellPerRow * numCellPerRow))
-                playerTurnView.setText("Tie!");
+                playerTurnView.setText(tieMsg);
         }
 
         return isWinnerFound;
@@ -303,11 +318,17 @@ public class Logic {
             }
         }
 
+        String wonMsg = " won!!!!!!";
+        String tieMsg = "Tie!";
+        if (language.equals("vi")) {
+            tieMsg = "Hòa!";
+            wonMsg = " thắng!!!!!!";
+        }
         if (isWinnerFound) {
             if (winner == 0)
-                playerTurnView.setText((playerNameO + " won!!!!!!"));
+                playerTurnView.setText((playerNameO + wonMsg));
             else
-                playerTurnView.setText((playerNameX + " won!!!!!!"));
+                playerTurnView.setText((playerNameX + wonMsg));
         } else {
             for (int row = 0; row < numCellPerRow; row++) {
                 for (int col = 0; col < numCellPerRow; col++) {
@@ -317,7 +338,7 @@ public class Logic {
             }
 
             if (count == (numCellPerRow * numCellPerRow))
-                playerTurnView.setText("Tie!");
+                playerTurnView.setText(tieMsg);
         }
 
         return isWinnerFound;
@@ -349,5 +370,9 @@ public class Logic {
 
     public Object[] getWinData() {
         return winData;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

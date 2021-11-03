@@ -22,6 +22,7 @@ public class GameActivity extends AppCompatActivity {
     String name1 = "Player 1";
     String name2 = "Player 2";
     String themeColor;
+    String language = "en_US";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class GameActivity extends AppCompatActivity {
         // Load saved color theme
         themeColor = savedDataSP.getString("color_theme", "pink");
         setThemeColor(themeColor);
+        loadSavedPreferences();
 
         setContentView(R.layout.activity_main); // R.layout.activity_main refers to the activity_main.xml file
         // Get the views
@@ -46,16 +48,23 @@ public class GameActivity extends AppCompatActivity {
 
         // name1 and name2 can be null due to null intent
         try {
-            if (name1.isEmpty()) name1 = "Player 1";
-            if (name2.isEmpty()) name2 = "Player 2";
+            if (language.equals("vi")) {
+                if (name1.isEmpty()) name1 = "Người chơi 1";
+                if (name2.isEmpty()) name2 = "Người chơi 2";
+            } else {
+                if (name1.isEmpty()) name1 = "Player 1";
+                if (name2.isEmpty()) name2 = "Player 2";
+            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
         // Set up game
-        board.setUpBoard(playerTurnView, name1, name2);
+        System.out.println("oncreate game activity language=" + language);
+        board.setUpBoard(playerTurnView, name1, name2, language);
         // Set first player name on TextView
-        playerTurnView.setText((name1 + "'s Turn"));
+        if (language.equals("vi")) playerTurnView.setText(("Lượt của " + name1));
+        else playerTurnView.setText((name1 + "'s Turn"));
 
         // Change background of board if dark mode
         int nightModeFlags =
@@ -68,7 +77,8 @@ public class GameActivity extends AppCompatActivity {
     public void onResetClick(View view) {
         board.resetBoard();
         // Reset first player name on TextView
-        playerTurnView.setText((name1 + "'s Turn"));
+        if (language.equals("vi")) playerTurnView.setText(("Lượt của " + name1));
+        else playerTurnView.setText((name1 + "'s Turn"));
     }
 
     public void onHomeClick(View view) {
@@ -115,5 +125,15 @@ public class GameActivity extends AppCompatActivity {
             System.out.print("Intial start of game: ");
             System.out.println(e.toString());
         }
+    }
+
+    private void loadSavedPreferences() {
+        // Get saved SharedPreferences from last changes
+        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+//        // Load saved preferences
+//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved language from last settings
+        language = savedDataSP.getString("language", "en_US");
     }
 }

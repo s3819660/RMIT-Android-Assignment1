@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import java.util.Locale;
+
 public class MenuActivity extends AppCompatActivity {
     String name1 = "";
     String name2 = "";
     String themeColor = "";
+    String language = "en_US";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class MenuActivity extends AppCompatActivity {
         // Load saved color theme
         themeColor = savedDataSP.getString("color_theme", "pink");
         setThemeColor(themeColor);
+        loadSavedPreferences();
+        setLanguage(language);
 
         // Set theme according to settings (Approach 2: using result code sent from Settings)
 //        Intent intent = getIntent();
@@ -161,6 +168,23 @@ public class MenuActivity extends AppCompatActivity {
             System.out.println(e.toString());
         }
     }
-}
 
-    //TODO: make menu animation
+    // Set language
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
+        Resources resources = this.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    }
+
+    private void loadSavedPreferences() {
+        // Get saved SharedPreferences from last changes
+        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+//        // Load saved preferences
+//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved language from last settings
+        language = savedDataSP.getString("language", "en_US");
+    }
+}

@@ -11,7 +11,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save &amp; Exit"
+        android:text="@string/save_and_exit"
         android:layout_gravity="end"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="30dp"

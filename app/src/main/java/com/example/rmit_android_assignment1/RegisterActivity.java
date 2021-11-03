@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,13 +14,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Locale;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText name1EditText;
     EditText name2EditText;
-    Button backBtn;
     String name1;
     String name2;
     String themeColor;
+    String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class RegisterActivity extends AppCompatActivity {
         // Load saved color theme
         themeColor = savedDataSP.getString("color_theme", "pink");
         setThemeColor(themeColor);
+        loadSavedPreferences();
+        setLanguage(language);
 
         setContentView(R.layout.activity_register);
     }
@@ -99,5 +105,27 @@ public class RegisterActivity extends AppCompatActivity {
             System.out.print("Intial start of app: ");
             System.out.println(e.toString());
         }
+    }
+
+    // Set language
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
+        Resources resources = this.getResources();
+        Configuration configuration = resources.getConfiguration();
+        System.out.println("current language=" + configuration.locale);
+        System.out.println("change to language=" + language);
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        System.out.println("change local complete language=" + configuration.locale);
+    }
+
+    private void loadSavedPreferences() {
+        // Get saved SharedPreferences from last changes
+        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+//        // Load saved preferences
+//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved language from last settings
+        language = savedDataSP.getString("language", "en_US");
     }
 }

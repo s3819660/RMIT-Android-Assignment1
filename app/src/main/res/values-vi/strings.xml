@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_settings">Cài đặt</string>
+    <string name="title_activity_register">Đăng ký</string>
+    <string name="next">Tiếp</string>
+    <string name="previous">Trở lại</string>
+    <string name="home">Về menu</string>
+    <string name="reset">Đặt lại</string>
+    <string name="enter_your_name">Nhập tên của bạn....</string>
+    <string name="cancel">Hủy</string>
+    <string name="play">Chơi</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="enable_dark_mode">Bật giao diện tối</string>
+    <string name="color_theme">Màu chủ đề</string>
+    <string name="edit_player_1_name">Đổi tên người chơi 1</string>
+    <string name="edit_player_2_name">Đổi tên người chơi 2</string>
+    <string name="game_mode">Chế độ chơi</string>
+    <string name="board_grid">Số ô trên bàn cờ</string>
+    <string name="appearance">Giao diện</string>
+    <string name="preferences">Cài đặt riêng</string>
+    <string name="start">Bắt đầu</string>
+    <string name="settings">Cài đặt</string>
+    <string name="player_1_name">Tên người chơi 1</string>
+    <string name="player_2_name">Tên người chơi 2</string>
+    <string name="save_and_exit">Lưu lại</string>
+</resources>

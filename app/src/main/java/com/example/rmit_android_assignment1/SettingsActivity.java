@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -16,15 +18,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import java.util.Locale;
+
 public class SettingsActivity extends AppCompatActivity {
     private String themeColor = "";
     private String prevName1 = "";
     private String prevName2 = "";
-    private String changeName1 = "";
-    private String changeName2 = "";
-    private String boardGrid = "3";
     private boolean isNightModeLocal = true;
-    private SharedPreferences sharedPreferences;
+    private String language = "en_US";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,9 @@ public class SettingsActivity extends AppCompatActivity {
         // Redraw/Update View
         invalidateOptionsMenu();
 
+        // Set saved language from last settings
+        setLanguage(language);
+
         // Get saved names from Menu if available
         Intent intent = getIntent();
         prevName1 = intent.getStringExtra("name1");
@@ -69,6 +73,16 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Resources resources = this.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = Locale.getDefault(); // default
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
     @Override
@@ -110,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
     // Check if any changes was made
     // And save the settings by using SharedPreferences
     private void loadSettings() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Get theme color change in Settings
         themeColor = sharedPreferences.getString("color_theme", "pink");
@@ -125,15 +139,18 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         // Get players' names change in settings
-        changeName1 = sharedPreferences.getString("edit_player1_name", "");
-        changeName2 = sharedPreferences.getString("edit_player2_name", "");
+        String changeName1 = sharedPreferences.getString("edit_player1_name", "");
+        String changeName2 = sharedPreferences.getString("edit_player2_name", "");
         if (changeName1.isEmpty())
             changeName1 = prevName1;
         if (changeName2.isEmpty())
             changeName2 = prevName2;
 
         // Get board grid change in settings
-        boardGrid = sharedPreferences.getString("board_grid", "");
+        String boardGrid = sharedPreferences.getString("board_grid", "");
+
+        // Get language change in settings
+        language = sharedPreferences.getString("language", "en_US");
 
         // Save to SharedPreferences
         // Create "UserPreferences" SharedPreferences to store settings data
@@ -145,6 +162,7 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putBoolean("dark_mode", checkNightModeToggle);
         editor.putString("settings_name1", changeName1);
         editor.putString("settings_name2", changeName2);
+        editor.putString("language", language);
         editor.putString("board_grid", boardGrid);
         // Apply changes made to preferences from this editor
         editor.apply();
@@ -200,25 +218,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // Set language
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
+        Resources resources = this.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    }
+
     private void loadSavedPreferences() {
         // Get saved SharedPreferences from last changes
         SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
         // Load saved preferences
         themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved language from last settings
+        language = savedDataSP.getString("language", "en_US");
     }
-
-    // Save settings to a file
-//    private void saveSettings() {
-        // Store settings data to a JSON object
-//        JSONObject settingsDataJSON = new JSONObject();
-//        try {
-//            settingsDataJSON.put("dark_mode", checkNightMode);
-//            settingsDataJSON.put("color_theme", themeColor);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-        // Save JSON object to JSON file
-//        fileWriter = new FileWriter();
-//    }
 }

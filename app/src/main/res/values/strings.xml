@@ -1,26 +1,42 @@
 <resources>
-    <string name="app_name">Tic Tac Toe</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="messages_header">Message header</string>
-    <string name="signature_title">Signature title</string>
-    <string name="reply_title">Reply title</string>
-    <string name="sync_header">Sync header</string>
-    <string name="sync_title">Sync title</string>
-    <string name="attachment_summary_off">Attachment Summary Off</string>
-    <string name="attachment_summary_on">Attachment summary on</string>
-    <string name="attachment_title">Attachment title</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="app_name" translatable="false">Tic Tac Toe</string>
+    <string name="messages_header" translatable="false">Message header</string>
+    <string name="signature_title" translatable="false">Signature title</string>
+    <string name="reply_title" translatable="false">Reply title</string>
+    <string name="sync_header" translatable="false">Sync header</string>
+    <string name="sync_title" translatable="false">Sync title</string>
+    <string name="attachment_summary_off" translatable="false">Attachment Summary Off</string>
+    <string name="attachment_summary_on" translatable="false">Attachment summary on</string>
+    <string name="attachment_title" translatable="false">Attachment title</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
+    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
     <string name="home">Home</string>
     <string name="reset">Reset</string>
     <string name="enter_your_name">Enter your name....</string>
     <string name="cancel">Cancel</string>
     <string name="play">Play</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_register">Register</string>
+    <string name="language">Language</string>
+    <string name="enable_dark_mode">Enable dark mode</string>
+    <string name="color_theme">Color theme</string>
+    <string name="edit_player_1_name">Edit player 1\'s name</string>
+    <string name="edit_player_2_name">Edit player 2\'s name</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="board_grid">Board grid</string>
+    <string name="appearance">Appearance</string>
+    <string name="preferences">Preferences</string>
+    <string name="start">Start</string>
+    <string name="settings">Settings</string>
+    <string name="player_1_name">Player 1\'s name:</string>
+    <string name="player_2_name">Player 2\'s name:</string>
+    <string name="save_and_exit"><![CDATA[Save & Exit]]></string>
+
+
 </resources>
