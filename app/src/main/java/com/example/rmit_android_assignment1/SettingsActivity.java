@@ -22,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String prevName2 = "";
     private String changeName1 = "";
     private String changeName2 = "";
+    private String boardGrid = "3";
     private boolean isNightModeLocal = true;
     private SharedPreferences sharedPreferences;
 
@@ -131,6 +132,9 @@ public class SettingsActivity extends AppCompatActivity {
         if (changeName2.isEmpty())
             changeName2 = prevName2;
 
+        // Get board grid change in settings
+        boardGrid = sharedPreferences.getString("board_grid", "");
+
         // Save to SharedPreferences
         // Create "UserPreferences" SharedPreferences to store settings data
         SharedPreferences dataSP = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
@@ -141,6 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putBoolean("dark_mode", checkNightModeToggle);
         editor.putString("settings_name1", changeName1);
         editor.putString("settings_name2", changeName2);
+        editor.putString("board_grid", boardGrid);
         // Apply changes made to preferences from this editor
         editor.apply();
     }
@@ -201,7 +206,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Load saved preferences
         themeColor = savedDataSP.getString("color_theme", "pink");
-
     }
 
     // Save settings to a file

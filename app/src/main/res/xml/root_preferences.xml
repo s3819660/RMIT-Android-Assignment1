@@ -39,16 +39,13 @@
 
     <PreferenceCategory app:title="Game Mode">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <ListPreference
+            app:defaultValue="3"
+            app:entries="@array/board_grid_entries"
+            app:entryValues="@array/board_grid_values"
+            app:key="board_grid"
+            app:title="Board grid"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

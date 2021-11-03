@@ -2,6 +2,7 @@ package com.example.rmit_android_assignment1;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -31,8 +32,13 @@ public class Board extends View {
     public Board(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
+        // Get saved SharedPreferences from last changes
+        SharedPreferences savedDataSP = context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+        // Load saved preferences
+        numCellPerRow = Integer.parseInt(savedDataSP.getString("board_grid", "3"));
         // Create an instance of Game Logic
-        logic = new Logic();
+        logic = new Logic(numCellPerRow);
 
         // Array of custom attributes in attrs.xml
         TypedArray arr = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Board,
@@ -42,8 +48,8 @@ public class Board extends View {
             // Get attributes from styled array, all default values = 0
             boardColor = arr.getInteger(R.styleable.Board_boardColor, 0);
 //            lineColor = arr.getInteger(R.styleable.Board_lineColor, 0);
-            lineColor = arr.getInteger(R.styleable.Board_colorX, 0);
             colorX = arr.getInteger(R.styleable.Board_colorX, 0);
+            lineColor = colorX;
             colorO = arr.getInteger(R.styleable.Board_colorO, 0);
             colorWinLine = arr.getInteger(R.styleable.Board_colorWinLine, 0);
         } finally {
@@ -64,7 +70,7 @@ public class Board extends View {
         int dimension = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
         // Get cell size
-        numCellPerRow = 3;
+//        numCellPerRow = 4;
         cellSize = dimension / numCellPerRow;
 
         // Set same dimension so we have a square that fits on the current device
@@ -95,11 +101,31 @@ public class Board extends View {
                     invalidate();
 
                     // Check if anyone has won
-                    if (logic.checkWinner()) {
-                        winLineExist = true;
+                    switch (numCellPerRow) {
+                        case 4:
+                            if (logic.checkWinner4x4()) {
+                                winLineExist = true;
 
-                        // Redraw board
-                        invalidate();
+                                // Redraw board
+                                invalidate();
+                            }
+                            break;
+                        case 5:
+                            if (logic.checkWinner5x5()) {
+                                winLineExist = true;
+
+                                // Redraw board
+                                invalidate();
+                            }
+                            break;
+                        default:
+                            if (logic.checkWinner3x3()) {
+                                winLineExist = true;
+
+                                // Redraw board
+                                invalidate();
+                            }
+                            break;
                     }
 
                     // 0 is o
@@ -155,8 +181,8 @@ public class Board extends View {
         // 1 is x
         int[][] board = logic.getBoard();
 
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < numCellPerRow; row++) {
+            for (int col = 0; col < numCellPerRow; col++) {
                 if (board[row][col] > -1) {
                     if (board[row][col] == 0)
                         drawO(canvas, row, col);
@@ -176,11 +202,11 @@ public class Board extends View {
         canvas.drawColor(boardColor);
 
         // Draw dividing lines
-        for (int col = 1; col < 3; col++) {
+        for (int col = 1; col < numCellPerRow; col++) {
             canvas.drawLine(cellSize * col, 0, cellSize * col, canvas.getHeight(), paint);
         }
 
-        for (int row = 1; row < 3; row++) {
+        for (int row = 1; row < numCellPerRow; row++) {
             canvas.drawLine(0, cellSize * row, canvas.getHeight(), cellSize * row, paint);
         }
     }
@@ -216,19 +242,19 @@ public class Board extends View {
     private void drawLine(Canvas canvas, int row, int col, LineType lineType) {
         if (lineType == LineType.HORIZONTAL && row > -1) {
             canvas.drawLine(col, row * cellSize + (float)(cellSize / 2),
-                            cellSize * 3, row * cellSize + (float)(cellSize / 2),
+                            cellSize * numCellPerRow, row * cellSize + (float)(cellSize / 2),
                             paint);
         } else if (lineType == LineType.VERTICAL) {
             canvas.drawLine(col * cellSize + (float)(cellSize / 2), row,
-                            col * cellSize + (float)(cellSize / 2), cellSize * 3,
+                            col * cellSize + (float)(cellSize / 2), cellSize * numCellPerRow,
                             paint);
         } else if (lineType == LineType.POSITIVE_DIAGONAL) {
-            canvas.drawLine(0, cellSize * 3,
-                            cellSize * 3, 0,
+            canvas.drawLine(0, cellSize * numCellPerRow,
+                            cellSize * numCellPerRow, 0,
                             paint);
         } else if (lineType == LineType.NEGATIVE_DIAGONAL) { // Negative diagonal
             canvas.drawLine(0, 0,
-                    cellSize * 3, cellSize * 3,
+                    cellSize * numCellPerRow, cellSize * numCellPerRow,
                     paint);
         }
     }
@@ -250,13 +276,5 @@ public class Board extends View {
 
     public void setLineColor(int lineColor) {
         this.lineColor = lineColor;
-    }
-
-    public int getNumCellPerRow() {
-        return numCellPerRow;
-    }
-
-    public void setNumCellPerRow(int numCellPerRow) {
-        this.numCellPerRow = numCellPerRow;
     }
 }

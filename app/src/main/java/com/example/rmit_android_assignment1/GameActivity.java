@@ -112,7 +112,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            System.out.print("Intial start of app: ");
+            System.out.print("Intial start of game: ");
             System.out.println(e.toString());
         }
     }

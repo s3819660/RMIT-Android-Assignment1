@@ -1,5 +1,5 @@
 <resources>
-    <!-- Reply Preference -->
+    <!-- Color theme -->
     <string-array name="color_theme_entries">
         <item>Pink</item>
         <item>Blue</item>
@@ -12,6 +12,7 @@
         <item>green</item>
     </string-array>
 
+    <!-- Languages -->
     <string-array name="language_entries">
         <item>English</item>
         <item>Tiếng Việt</item>
@@ -20,5 +21,18 @@
     <string-array name="language_values">
         <item>en</item>
         <item>vi</item>
+    </string-array>
+
+    <!-- Board grid -->
+    <string-array name="board_grid_entries">
+        <item>3x3</item>
+        <item>4x4</item>
+        <item>5x5</item>
+    </string-array>
+
+    <string-array name="board_grid_values">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 </resources>
