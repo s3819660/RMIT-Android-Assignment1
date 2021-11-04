@@ -47,7 +47,6 @@ public class Board extends View {
         try {
             // Get attributes from styled array, all default values = 0
             boardColor = arr.getInteger(R.styleable.Board_boardColor, 0);
-//            lineColor = arr.getInteger(R.styleable.Board_lineColor, 0);
             colorX = arr.getInteger(R.styleable.Board_colorX, 0);
             lineColor = colorX;
             colorO = arr.getInteger(R.styleable.Board_colorO, 0);
@@ -70,7 +69,6 @@ public class Board extends View {
         int dimension = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
         // Get cell size
-//        numCellPerRow = 4;
         cellSize = dimension / numCellPerRow;
 
         // Set same dimension so we have a square that fits on the current device

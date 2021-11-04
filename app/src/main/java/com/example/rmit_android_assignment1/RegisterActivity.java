@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Locale;
@@ -28,20 +27,15 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set theme using SharedPreferences
-        // Get SharedPreferences
-        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
-                ("UserPreferences", Context.MODE_PRIVATE);
-        // Load saved color theme
-        themeColor = savedDataSP.getString("color_theme", "pink");
-        setThemeColor(themeColor);
+        // Load saved preferences from last changes in settings
         loadSavedPreferences();
+        setThemeColor(themeColor);
         setLanguage(language);
 
         setContentView(R.layout.activity_register);
     }
 
-    public void onPlayBtnClick(View view) {
+    public void onPlayClick(View view) {
         getViews();
 
         name1 = name1EditText.getText().toString();
@@ -62,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onCancelBtnClick(View view) {
+    public void onCancelClick(View view) {
         finish();
     }
 
@@ -112,19 +106,16 @@ public class RegisterActivity extends AppCompatActivity {
         Locale locale = new Locale(language);
         Resources resources = this.getResources();
         Configuration configuration = resources.getConfiguration();
-        System.out.println("current language=" + configuration.locale);
-        System.out.println("change to language=" + language);
         configuration.setLocale(locale);
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        System.out.println("change local complete language=" + configuration.locale);
     }
 
     private void loadSavedPreferences() {
         // Get saved SharedPreferences from last changes
         SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
-//        // Load saved preferences
-//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved preferences
+        themeColor = savedDataSP.getString("color_theme", "pink");
         // Load saved language from last settings
         language = savedDataSP.getString("language", "en_US");
     }

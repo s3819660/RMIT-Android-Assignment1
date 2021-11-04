@@ -2,7 +2,6 @@ package com.example.rmit_android_assignment1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity {
@@ -28,50 +26,27 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set theme using SharedPreferences
-        // Get SharedPreferences
-        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
-                ("UserPreferences", Context.MODE_PRIVATE);
-        // Load saved color theme
-        themeColor = savedDataSP.getString("color_theme", "pink");
-        setThemeColor(themeColor);
+        // Load theme and language according to previous settings using SharedPreferences
+        // Theme should be retrieved before setting content view
         loadSavedPreferences();
-
+        setThemeColor(themeColor);
+        // And set content view
         setContentView(R.layout.activity_main); // R.layout.activity_main refers to the activity_main.xml file
+
         // Get the views
         getViews();
 
-        // Get intent and name extras
-        Intent intent = getIntent();
-        name1 = intent.getStringExtra("name1");
-        name2 = intent.getStringExtra("name2");
-
-        // name1 and name2 can be null due to null intent
-        try {
-            if (language.equals("vi")) {
-                if (name1.isEmpty()) name1 = "Người chơi 1";
-                if (name2.isEmpty()) name2 = "Người chơi 2";
-            } else {
-                if (name1.isEmpty()) name1 = "Player 1";
-                if (name2.isEmpty()) name2 = "Player 2";
-            }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+        // Load names sent from previous activities
+        loadNamesFromIntent();
 
         // Set up game
-        System.out.println("oncreate game activity language=" + language);
         board.setUpBoard(playerTurnView, name1, name2, language);
+
         // Set first player name on TextView
-        if (language.equals("vi")) playerTurnView.setText(("Lượt của " + name1));
-        else playerTurnView.setText((name1 + "'s Turn"));
+        setFirstTurnView();
 
         // Change background of board if dark mode
-        int nightModeFlags =
-                this.getResources().getConfiguration().uiMode &
-                        Configuration.UI_MODE_NIGHT_MASK;
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
-            board.setLineColor(Color.BLACK);
+        setDarkMode();
     }
 
     public void onResetClick(View view) {
@@ -89,6 +64,19 @@ public class GameActivity extends AppCompatActivity {
     private void getViews() {
         board = (Board) findViewById(R.id.board);
         playerTurnView = (TextView) findViewById(R.id.text_view_turn);
+    }
+
+    private void setFirstTurnView() {
+        if (language.equals("vi")) playerTurnView.setText(("Lượt của " + name1));
+        else playerTurnView.setText((name1 + "'s Turn"));
+    }
+
+    private void setDarkMode() {
+        int nightModeFlags =
+                this.getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
+            board.setLineColor(Color.BLACK);
     }
 
     private void setThemeColor(String themeColor) {
@@ -131,9 +119,29 @@ public class GameActivity extends AppCompatActivity {
         // Get saved SharedPreferences from last changes
         SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
-//        // Load saved preferences
-//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved preferences
+        themeColor = savedDataSP.getString("color_theme", "pink");
         // Load saved language from last settings
         language = savedDataSP.getString("language", "en_US");
+    }
+
+    private void loadNamesFromIntent() {
+        // Get intent and name extras
+        Intent intent = getIntent();
+        name1 = intent.getStringExtra("name1");
+        name2 = intent.getStringExtra("name2");
+
+        // name1 and name2 can be null due to null intent
+        try {
+            if (language.equals("vi")) {
+                if (name1.isEmpty()) name1 = "Người chơi 1";
+                if (name2.isEmpty()) name2 = "Người chơi 2";
+            } else {
+                if (name1.isEmpty()) name1 = "Player 1";
+                if (name2.isEmpty()) name2 = "Player 2";
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 }

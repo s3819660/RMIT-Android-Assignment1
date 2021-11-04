@@ -2,12 +2,10 @@ package com.example.rmit_android_assignment1;
 
 import android.widget.TextView;
 
-import java.sql.SQLOutput;
-
 public class Logic {
     private int[][] board;
 
-    private int numCellPerRow = 3;
+    private int numCellPerRow;
     private int currentPlayer = 1;
 
     private String language = "en_US";
@@ -18,20 +16,10 @@ public class Logic {
 
     Object[] winData;
 
-    public Logic() {
-        board = new int[numCellPerRow][numCellPerRow];
-
-        // Initialize default value to draw win line later
-        winData = new Object[numCellPerRow];
-        winData[0] = -1;
-        winData[1] = -1;
-        winData[2] = LineType.HORIZONTAL;
-
-        resetBoard();
-    }
-
     public Logic(int numCellPerRow) {
+        // Set number of cell per row
         this.numCellPerRow = numCellPerRow;
+        // Set board as a new 2D array accordingly
         board = new int[numCellPerRow][numCellPerRow];
 
         // Initialize default value to draw win line later
@@ -40,20 +28,29 @@ public class Logic {
         winData[1] = -1;
         winData[2] = LineType.HORIZONTAL;
 
+        // Reset board
         resetBoard();
     }
 
+    // Update board when a new cell is clicked on
     public boolean updateBoard(int row, int col) {
-        //TODO: row -= 1; col -= 1;
-        if (board[row - 1][col - 1] < 0) {
-            board[row - 1][col - 1] = currentPlayer;
+        // Convert row and column number to indices in the board array
+        row -= 1;
+        col -= 1;
 
+        // Check if current cell is empty (-1)
+        if (board[row][col] < 0) {
+            // Mark current cell by current player
+            board[row][col] = currentPlayer;
+
+            // Check if the current language is Vietnamese and change the text view
             if (language.equals("vi")) {
                 if (currentPlayer == 1)
                     playerTurnView.setText(("Lượt của " + playerNameO));
                 else
                     playerTurnView.setText(("Lượt của " + playerNameX));
             } else {
+                // Else set the text views to English
                 if (currentPlayer == 1)
                     playerTurnView.setText((playerNameO + "'s Turn"));
                 else
@@ -80,14 +77,16 @@ public class Logic {
     public boolean checkWinner3x3() {
         int winner = -1;
         boolean isWinnerFound = false;
-        int count = 0;
 
         // Check horizontal win
         for (int row = 0; row < numCellPerRow; row++) {
             winner = board[row][0];
             if (winner > -1) {
                 if (board[row][1] == winner && board[row][2] == winner) {
+                    // Already found winner
                     isWinnerFound = true;
+
+                    // Set win data to draw win line
                     winData[0] = row;
                     winData[1] = 0;
                     winData[2] = LineType.HORIZONTAL;
@@ -102,7 +101,10 @@ public class Logic {
                 winner = board[0][col];
                 if (winner > -1) {
                     if (board[1][col] == winner && board[2][col] == winner) {
+                        // Already found winner
                         isWinnerFound = true;
+
+                        // Set win data to draw win line
                         winData[0] = 0;
                         winData[1] = col;
                         winData[2] = LineType.VERTICAL;
@@ -116,40 +118,26 @@ public class Logic {
         if (!isWinnerFound && board[1][1] > -1) {
             winner = board[1][1];
             if (board[0][0] == winner && board[2][2] == winner) {
+                // Set win data to draw win line
                 winData[0] = -1;
                 winData[1] = -1;
                 winData[2] = LineType.NEGATIVE_DIAGONAL;
+
+                // Already found winner
                 isWinnerFound = true;
             } else if (board[0][2] == winner && board[2][0] == winner) {
+                // Set win data to draw win line
                 winData[0] = -1;
                 winData[1] = -1;
                 winData[2] = LineType.POSITIVE_DIAGONAL;
+
+                // Already found winner
                 isWinnerFound = true;
             }
         }
 
-        String wonMsg = " won!!!!!!";
-        String tieMsg = "Tie!";
-        if (language.equals("vi")) {
-            tieMsg = "Hòa!";
-            wonMsg = " thắng!!!!!!";
-        }
-        if (isWinnerFound) {
-            if (winner == 0)
-                playerTurnView.setText((playerNameO + wonMsg));
-            else
-                playerTurnView.setText((playerNameX + wonMsg));
-        } else {
-            for (int row = 0; row < numCellPerRow; row++) {
-                for (int col = 0; col < numCellPerRow; col++) {
-                    if (board[row][col] > -1)
-                        count++;
-                }
-            }
-
-            if (count == 9)
-                playerTurnView.setText(tieMsg);
-        }
+        // Display won/tie message according to current language
+        displayResultMessage(isWinnerFound, winner, 9);
 
         return isWinnerFound;
     }
@@ -158,7 +146,6 @@ public class Logic {
     public boolean checkWinner4x4() {
         int winner = -1;
         boolean isWinnerFound = false;
-        int count = 0;
 
         // Check horizontal win
         for (int row = 0; row < numCellPerRow; row++) {
@@ -223,28 +210,8 @@ public class Logic {
             }
         }
 
-        String wonMsg = " won!!!!!!";
-        String tieMsg = "Tie!";
-        if (language.equals("vi")) {
-            tieMsg = "Hòa!";
-            wonMsg = " thắng!!!!!!";
-        }
-        if (isWinnerFound) {
-            if (winner == 0)
-                playerTurnView.setText((playerNameO + wonMsg));
-            else
-                playerTurnView.setText((playerNameX + wonMsg));
-        } else {
-            for (int row = 0; row < numCellPerRow; row++) {
-                for (int col = 0; col < numCellPerRow; col++) {
-                    if (board[row][col] > -1)
-                        count++;
-                }
-            }
-
-            if (count == (numCellPerRow * numCellPerRow))
-                playerTurnView.setText(tieMsg);
-        }
+        // Display won/tie message according to current language
+        displayResultMessage(isWinnerFound, winner, 16);
 
         return isWinnerFound;
     }
@@ -253,7 +220,6 @@ public class Logic {
     public boolean checkWinner5x5() {
         int winner = -1;
         boolean isWinnerFound = false;
-        int count = 0;
 
         // Check horizontal win
         for (int row = 0; row < numCellPerRow; row++) {
@@ -318,18 +284,31 @@ public class Logic {
             }
         }
 
+        // Display won/tie message according to current language
+        displayResultMessage(isWinnerFound, winner, 25);
+
+        return isWinnerFound;
+    }
+
+    // Display result message on Text View
+    private void displayResultMessage(boolean isWinnerFound, int winner, int maxNumCell) {
+        int count = 0;
         String wonMsg = " won!!!!!!";
         String tieMsg = "Tie!";
+
+        // Check if current language is Vietnamese
         if (language.equals("vi")) {
             tieMsg = "Hòa!";
             wonMsg = " thắng!!!!!!";
         }
+        // If winner was found, display won message
         if (isWinnerFound) {
             if (winner == 0)
                 playerTurnView.setText((playerNameO + wonMsg));
             else
                 playerTurnView.setText((playerNameX + wonMsg));
         } else {
+            // Check if all cells were filled
             for (int row = 0; row < numCellPerRow; row++) {
                 for (int col = 0; col < numCellPerRow; col++) {
                     if (board[row][col] > -1)
@@ -337,11 +316,11 @@ public class Logic {
                 }
             }
 
-            if (count == (numCellPerRow * numCellPerRow))
+            // All cells were filled
+            if (count == maxNumCell)
+                // Display tie message
                 playerTurnView.setText(tieMsg);
         }
-
-        return isWinnerFound;
     }
 
     public int[][] getBoard() {

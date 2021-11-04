@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import java.util.Locale;
 
@@ -25,16 +24,13 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Load saved preferences from last changes in settings
         // Set theme according to settings (Approach 1: using SharedPreferences )
-        // Get SharedPreferences
-        SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences
-                                        ("UserPreferences", Context.MODE_PRIVATE);
-        // Load saved color theme
-        themeColor = savedDataSP.getString("color_theme", "pink");
-        setThemeColor(themeColor);
         loadSavedPreferences();
+        setThemeColor(themeColor);
         setLanguage(language);
 
+        // Note for further learning
         // Set theme according to settings (Approach 2: using result code sent from Settings)
 //        Intent intent = getIntent();
 //        themeColor = intent.getStringExtra("theme_color");
@@ -56,7 +52,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivityForResult(intent, 100); // From menu to register
     }
 
-    public void goToSettingsActivity(View view) {
+    public void onSettingsClick(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra("name1", name1);
         intent.putExtra("name2", name2);
@@ -64,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     //TODO: rename all goto methods to onBtnClick
-    public void goToStart(View view) {
+    public void onStartClick(View view) {
         // Get new names if changes were made in settings
         try {
             // Set name changes from SharedPreferences
@@ -182,8 +178,8 @@ public class MenuActivity extends AppCompatActivity {
         // Get saved SharedPreferences from last changes
         SharedPreferences savedDataSP = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
-//        // Load saved preferences
-//        themeColor = savedDataSP.getString("color_theme", "pink");
+        // Load saved preferences
+        themeColor = savedDataSP.getString("color_theme", "pink");
         // Load saved language from last settings
         language = savedDataSP.getString("language", "en_US");
     }
